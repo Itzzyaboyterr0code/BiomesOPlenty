@@ -50,15 +50,6 @@ repositories {
     }
 }
 
-dependencies {
-    //compile name: 'WorldCore', version: "${config.minecraft_version}-${config.worldcore_version}", ext: 'jar'
-    //compile name: 'ForgeMultipart', version: "${config.minecraft_version}-${config.fmp_version}", ext: 'jar'
-}
-
-group = "com.itzzyaboyterr.plentyofbiomes"
-version = config.mod_version
-archivesBaseName = "BiomesOPlenty"
-
 // define the properties file
 ext.configFile = file "build.properties"
 
@@ -68,6 +59,15 @@ configFile.withReader {
     prop.load(it)
     project.ext.config = new ConfigSlurper().parse prop
 }
+
+dependencies {
+    //compile name: 'WorldCore', version: "${config.minecraft_version}-${config.worldcore_version}", ext: 'jar'
+    //compile name: 'ForgeMultipart', version: "${config.minecraft_version}-${config.fmp_version}", ext: 'jar'
+}
+
+group = "com.itzzyaboyterr.plentyofbiomes"
+version = config.mod_version
+archivesBaseName = "BiomesOPlenty"
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version // grab latest forge
