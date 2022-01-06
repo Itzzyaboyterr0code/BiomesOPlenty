@@ -53,7 +53,6 @@ repositories {
 
 // define the properties file
 ext.configFile = file "build.properties"
-
 configFile.withReader {
     // read config.  it shall from now on be referenced as simply config or as project.config
     def prop = new Properties()
