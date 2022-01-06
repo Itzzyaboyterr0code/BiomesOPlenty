@@ -8,6 +8,6 @@ This repository contains the mod's API and language files. Issues can also be re
 
 -----------------
 
-**Credit:**https://github.com/Glitchfiend/BiomesOPlenty {Original mod}
+**Credit:** https://github.com/Glitchfiend/BiomesOPlenty {Original mod}
 
 -----------------
