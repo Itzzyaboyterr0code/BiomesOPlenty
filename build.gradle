@@ -36,6 +36,7 @@ configurations {
     deployJars
 }
 
+apply plugin: "maven"
 apply plugin: "forge"
 
 repositories {
