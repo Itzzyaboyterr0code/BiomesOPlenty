@@ -2,7 +2,7 @@
     "modid": "PlentyOfBiomes",
     "name": "Plenty Of Biomes",
     "description": "Adds over 50 new biomes, blocks, and more!",
-    "version": "${mod_version}",
+    "version": "0.1",
     "mcversion": "${minecraft_version}",
     "updateUrl": "",
     "authorList": ["Itzzyaboyterr"],
