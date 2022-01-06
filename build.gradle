@@ -1,7 +1,6 @@
 buildscript {
     repositories {
      
-        // [HTTPS FIX] Replace mavenCentral() with the code block below
         maven {
             url "https://repo1.maven.org/maven2" 
         }
@@ -67,7 +66,7 @@ dependencies {
     //compile name: 'ForgeMultipart', version: "${config.minecraft_version}-${config.fmp_version}", ext: 'jar'
 }
 
-group = "com.github.glitchfiend.biomesoplenty"
+group = "com.itzzyaboyterr.plentyofbiomes"
 version = config.mod_version
 archivesBaseName = "BiomesOPlenty"
 
