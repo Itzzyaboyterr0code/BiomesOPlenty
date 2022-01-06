@@ -19,7 +19,6 @@ buildscript {
     }
 }
 
-// [HTTPS FIX] Add the code block below
 allprojects {
     repositories {
         all { ArtifactRepository repo ->
@@ -51,15 +50,6 @@ repositories {
     }
 }
 
-// define the properties file
-ext.configFile = file "build.properties"
-configFile.withReader {
-    // read config.  it shall from now on be referenced as simply config or as project.config
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
-
 dependencies {
     //compile name: 'WorldCore', version: "${config.minecraft_version}-${config.worldcore_version}", ext: 'jar'
     //compile name: 'ForgeMultipart', version: "${config.minecraft_version}-${config.fmp_version}", ext: 'jar'
@@ -68,6 +58,16 @@ dependencies {
 group = "com.itzzyaboyterr.plentyofbiomes"
 version = config.mod_version
 archivesBaseName = "BiomesOPlenty"
+
+// define the properties file
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // read config.  it shall from now on be referenced as simply config or as project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version // grab latest forge
