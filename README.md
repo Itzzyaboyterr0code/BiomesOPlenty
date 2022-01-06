@@ -13,3 +13,7 @@ This repository contains the mod's API and language files. Issues can also be re
 **Credit:** https://github.com/Glitchfiend/BiomesOPlenty {Original mod}
 
 -----------------
+
+**Compatiblety:** Compatible with worlds made using BOP. Not compatible with BOP itself
+
+-----------------
