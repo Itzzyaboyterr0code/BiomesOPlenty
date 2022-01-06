@@ -1,10 +1,14 @@
 buildscript {
     repositories {
-        mavenCentral()
-                mavenLocal()
+     
+        // [HTTPS FIX] Replace mavenCentral() with the code block below
+        maven {
+            url "https://repo1.maven.org/maven2" 
+        }
+     
         maven {
             name = "ForgeFS"
-            url = "https://files.minecraftforge.net/maven"
+            url = "http://files.minecraftforge.net/maven"
         }
                 maven {
             name = "sonatype"
@@ -13,6 +17,19 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+// [HTTPS FIX] Add the code block below
+allprojects {
+    repositories {
+        all { ArtifactRepository repo ->
+            if (repo instanceof MavenArtifactRepository){
+                if (repo.url.toString().startsWith("http://repo1.maven.org/maven2")) {
+                    repo.url = repo.url.toString().replace("http://", "https://")
+                }
+            }
+        }
     }
 }
 
@@ -31,7 +48,7 @@ repositories {
     }
     ivy {
         name 'Forge FS legacy'
-        artifactPattern "https://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
     }
 }
 
@@ -108,7 +125,7 @@ task createChangelog(type: ChangelogTask) {
         def jobName = "${System.getenv().JOB_NAME}"
         def buildNumber = "${System.getenv().BUILD_NUMBER}"
 
-        setServerRoot(new DelayedString(project, 'https://ci.jenkins.minecraftforge.net/'))
+        setServerRoot(new DelayedString(project, 'http://ci.jenkins.minecraftforge.net/'))
         setJobName(new DelayedString(project, jobName.toString()));
     setAuthName(new DelayedString(project, 'console_script'));
     setAuthPassword(new DelayedString(project, 'dc6d48ca20a474beeac280a9a16a926e'));
@@ -184,7 +201,7 @@ uploadArchives {
             licenses {
                 license {
                     name 'Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported'
-                    url 'https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US'
+                    url 'http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US'
                     distribution 'repo'
                 }
             }
