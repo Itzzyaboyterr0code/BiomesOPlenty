@@ -6,7 +6,7 @@ This repository contains the mod's API and language files. Issues can also be re
 
 -----------------
 
-**Note:** To use the mod on a **server**, you must set the **level-type** setting in your server's config file to **biomesoplenty**
+**Note:** To use the mod on a **server**, you must set the **level-type** setting in your server's config file to **BIOMESOP**
 
 -----------------
 
