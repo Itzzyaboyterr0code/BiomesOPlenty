@@ -1,4 +1,4 @@
-https://github.com/Itzzyaboyterr0code/PlentyOfBiomes/blob/Master/src/main/resources/assets/biomesoplenty/textures/gui/logo.png?raw=true
+<img data-canonical-src="https://i.imgur.com/HQ2opH6.png" style="max-width: 100%;" src="https://github.com/Itzzyaboyterr0code/PlentyOfBiomes/blob/Master/src/main/resources/assets/biomesoplenty/textures/gui/logo.png?raw=true">
 
 **Plenty Of Biomes** is a **Minecraft mod** that adds **new biomes** to the Overworld, Nether, and End. all of our biomes are decorated with a variety of **new trees, flowers, and plants!**
 
