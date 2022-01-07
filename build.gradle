@@ -2,7 +2,7 @@ buildscript {
     repositories {
      
         maven {
-            url "https://archive.apache.org/dist/maven/binaries/apache-maven-2.2.1-bin.zip" 
+            url "https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip" 
         }
      
         maven {
