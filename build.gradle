@@ -1,233 +1,66 @@
 buildscript {
     repositories {
-     
+        mavenCentral()
         maven {
-            url "https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip" 
+            name = "forge"
+            url = "https://maven.minecraftforge.net/"
         }
-     
         maven {
-            name = "ForgeFS"
-            url = "http://files.minecraftforge.net/maven"
-            allowInsecureProtocol = true
-        }
-                maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
-}
-
-allprojects {
-    repositories {
-        all { ArtifactRepository repo ->
-            if (repo instanceof MavenArtifactRepository){
-                if (repo.url.toString().startsWith("http://repo1.maven.org/maven2")) {
-                    repo.url = repo.url.toString().replace("http://", "https://")
-                }
-            }
+        maven {
+            name = "juanmuscaria"
+            url = "https://github.com/juanmuscaria/maven/raw/master"
         }
     }
-}
-
-configurations {
-    deployJars
-}
-
-apply plugin: "maven"
-apply plugin: "forge"
-
-repositories {
-    mavenLocal()
-    flatDir {
-        name "fileRepo"
-        dirs "repo"
-    }
-    ivy {
-        name 'Forge FS legacy'
-        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-1.4.6-SNAPSHOT'
     }
 }
 
-// define the properties file
-ext.configFile = file "build.properties"
+apply plugin: 'forge'
 
-configFile.withReader {
-    // read config.  it shall from now on be referenced as simply config or as project.config
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
+version = "1.0"
+group = "com.itzzyaboyterr.plentyofbiomes" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "eclipse"
 }
 
 dependencies {
-    //compile name: 'WorldCore', version: "${config.minecraft_version}-${config.worldcore_version}", ext: 'jar'
-    //compile name: 'ForgeMultipart', version: "${config.minecraft_version}-${config.fmp_version}", ext: 'jar'
-}
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
 
-group = "com.itzzyaboyterr.plentyofbiomes"
-version = config.mod_version
-archivesBaseName = "BiomesOPlenty"
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
-minecraft {
-    version = config.minecraft_version + "-" + config.forge_version // grab latest forge
-    assetDir = "run/assets"
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-        replaceIn "BiomesOPlenty.java"
-            replace "1.42.666.42.1", config.forge_version
-}
-
-// add some stuff to the version
-version = "${config.minecraft_version}-${config.mod_version}.${System.getenv().BUILD_NUMBER}"
-
-jenkins {
-    job = 'BiomesOPlenty'
 }
 
 processResources {
-    // replace stuff in the files we want.
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        include '**/*.properties'
+        include 'mcmod.info'
 
-        // replaces
-        expand ([
-            'modid': project.archivesBaseName,
-            'mod_version': project.config.mod_version,
-            'minecraft_version': project.config.minecraft_version,
-            'build_number': project.config.build_number,
-            'worldcore_version': project.config.worldcore_version
-        ])
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
 
-    // copy everything else, thats we didnt do before
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
-        exclude '**/*.properties'
-    }
-}
-
-jar {
-    manifest {
-        //attributes 'FMLCorePlugin': 'biomesoplenty.asm.BOPFMLLoadingPlugin'
-        //attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
-    classifier = 'universal'
-}
-
-import net.minecraftforge.gradle.tasks.dev.ChangelogTask
-import net.minecraftforge.gradle.common.Constants
-import net.minecraftforge.gradle.delayed.*
-
-task createChangelog(type: ChangelogTask) {
-        def jobName = "${System.getenv().JOB_NAME}"
-        def buildNumber = "${System.getenv().BUILD_NUMBER}"
-
-        setServerRoot(new DelayedString(project, 'http://ci.jenkins.minecraftforge.net/'))
-        setJobName(new DelayedString(project, jobName.toString()));
-    setAuthName(new DelayedString(project, 'console_script'));
-    setAuthPassword(new DelayedString(project, 'dc6d48ca20a474beeac280a9a16a926e'));
-    setTargetBuild({buildNumber.toString()});
-    setOutput(new DelayedFile(project, 'build/distributions/' + project.getName() + '-' + project.version + '-changelog.txt'));
-}
-
-tasks.build.dependsOn('createChangelog')
-
-task sourceZip(type: Zip) {
-    from sourceSets.main.allSource
-    classifier = 'src'
-}
-
-task apiZip(type: Zip) {
-    from(sourceSets.main.java)
-    {
-        include "biomesoplenty/api/*"
-    }
-    classifier = 'api'
-}
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-artifacts {
-    archives sourceZip
-    archives deobfJar
-    archives apiZip
-}
-
-uploadArchives {
-    repositories {
-                add getProject().repositories.mavenLocal()
-    }
-    repositories.mavenDeployer {
-            configuration = configurations.deployJars
-
-        if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to files server')
-            repository(url: project.filesmaven.url) {
-                authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
-            }
-        } else {
-            logger.info('Publishing to repo folder')
-            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
-        }
-
-        pom {
-            groupId = project.group
-            version = project.version
-            artifactId = project.archivesBaseName
-        }
-        pom.project {
-            name project.archivesBaseName
-            packaging 'jar'
-            description 'Biomes O Plenty'
-            url 'https://github.com/Glitchfiend/BiomesOPlenty'
-
-            scm {
-                url 'https://github.com/Glitchfiend/BiomesOPlenty'
-                connection 'scm:git:git://github.com/Glitchfiend/BiomesOPlenty.git'
-                developerConnection 'scm:git:git@github.com:Glitchfiend/BiomesOPlenty.git'
-            }
-
-            issueManagement {
-                system 'github'
-                url 'https://github.com/Glitchfiend/BiomesOPlenty/issues'
-            }
-
-            licenses {
-                license {
-                    name 'Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported'
-                    url 'http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US'
-                    distribution 'repo'
-                }
-            }
-
-            developers {
-                developer {
-                    id 'Adubbz'
-                    name 'Adubbz'
-                    roles { role 'developer' }
-                }
-                developer {
-                    id 'Forstride'
-                    name 'Forstride'
-                    roles { role 'developer' }
-                }
-                developer {
-                    id 'Amnet'
-                    name 'Amnet'
-                    roles { role 'developer' }
-                }
-
-                                developer {
-                    id 'ted80'
-                    name 'ted80'
-                    roles { role 'developer' }
-                }
-            }
-        }
+        exclude 'mcmod.info'
     }
 }
