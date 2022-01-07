@@ -3,7 +3,7 @@
     "name": "Plenty Of Biomes",
     "description": "Adds over 50 new biomes, blocks, and more!",
     "version": "0.1",
-    "mcversion": "${minecraft_version}",
+    "mcversion": "1.7.10",
     "updateUrl": "",
     "authorList": ["Itzzyaboyterr"],
     "credits": "",
