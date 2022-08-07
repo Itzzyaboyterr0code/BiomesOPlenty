@@ -2,18 +2,16 @@
 
 **Plenty Of Biomes** is a **Minecraft mod** that adds **new biomes** to the Overworld, Nether, and End. all of our biomes are decorated with a variety of **new trees, flowers, and plants!**
 
-This repository contains the mod's API and language files. Issues can also be reported on the issue tracker.
-
 -----------------
 
 **Note:** To use the mod on a **server**, you must set the **level-type** setting in your server's config file to **BIOMESOP**
 
 -----------------
 
-**Credit:** https://github.com/Glitchfiend/BiomesOPlenty {Original mod}
+**Credit:** https://github.com/Glitchfiend/BiomesOPlenty ***(Original mod)***
 
 -----------------
 
-**Compatiblety:** Compatible with worlds made using BOP. Not compatible with BOP itself
+**Compatiblity:** Compatible with worlds made using BOP. Not compatible with BOP itself
 
 -----------------
